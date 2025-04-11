@@ -9,7 +9,7 @@ import onboard
 import user_profile
 import admin
 import contact
-
+import live_demo
 
 # Initialize connection to Supabase
 SUPABASE_URL = "https://wtpufclshxbpkdnuczzq.supabase.co"
@@ -74,6 +74,7 @@ def main():
                 "Profile": "👤 Profile",
                 "Contact": "📞 Contact",
                 "Admin": "🔧 Admin",
+                "Live Demo": "🎬 Live Demo",
                 "Logout": "🚪 Logout"
             }[x]
         )
@@ -152,6 +153,10 @@ def main():
         elif menu == "Admin":
             st.session_state["current_page"] = "Admin"
             admin.render_admin_dashboard(supabase)
+
+        elif menu == "Live Demo":
+            st.session_state["current_page"] = "Live Demo"
+            live_demo.render_live_demo_page(supabase)
 
         elif menu == "Logout":
             auth.logout_user()  # Clears session state and reruns
