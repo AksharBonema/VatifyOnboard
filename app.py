@@ -64,7 +64,7 @@ def main():
             base_pages.insert(3, "Admin")  # Insert Admin before Contact
 
         menu = st.sidebar.radio(
-            "VATIFY Menu",
+            "Menu",
             options=base_pages,
             format_func=lambda x: {
                 "Home": "🏠 Home",
@@ -80,7 +80,7 @@ def main():
         if menu == "Home":
             st.session_state["current_page"] = "Home"
 
-            st.markdown("## 👋 Welcome to VATIFY,")
+            st.markdown("## 👋 Welcome to the VATIFY onboarding platform,")
             st.markdown(f"### {st.session_state.get('user_email', 'User')}")
             st.markdown("---")
 
