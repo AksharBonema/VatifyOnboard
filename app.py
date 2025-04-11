@@ -1,5 +1,3 @@
-# app.py
-
 import streamlit as st
 from supabase import create_client, Client
 
@@ -13,7 +11,7 @@ import live_demo
 
 # Initialize connection to Supabase
 SUPABASE_URL = "https://wtpufclshxbpkdnuczzq.supabase.co"
-SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind0cHVmY2xzaHhicGtkbnVjenpxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQyNjU2NDAsImV4cCI6MjA1OTg0MTY0MH0.tW8TD_F4dmOGH4TEzFMZmeQmdtDlJ6dZQg8mjH1Ad1A"
+SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind0cHVmY2xzaHxicGtkbnVjenpxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQyNjU2NDAsImV4cCI6MjA1OTg0MTY0MH0.tW8TD_F4dmOGH4TEzFMZmeQmdtDlJ6dZQg8mjH1Ad1A"
 supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 
 def fetch_user_role(user_id: str) -> str:
@@ -35,7 +33,7 @@ def main():
     if "user_id" not in st.session_state:
         st.session_state["user_id"] = None
     if "auth_mode" not in st.session_state:
-        st.session_state["auth_mode"] = "login"  # could be 'login', 'signup', 'forgot_password'
+        st.session_state["auth_mode"] = "login"  # can be 'login', 'signup', 'forgot_password'
     if "user_email" not in st.session_state:
         st.session_state["user_email"] = None
     if "current_page" not in st.session_state:
@@ -52,18 +50,18 @@ def main():
         elif st.session_state["auth_mode"] == "forgot_password":
             auth.render_forgot_password_view(supabase)
     else:
-        # If role isn't set, fetch it once user is logged in
+        # Fetch role if it is still default (i.e., not changed)
         if st.session_state["role"] == "user":
             user_role = fetch_user_role(st.session_state["user_id"])
             st.session_state["role"] = user_role
 
-        # Logged in user: show side menu with icons
+        # Logged in user: show sidebar with icons
         st.sidebar.image("VATIFY.png", use_container_width=True)
 
-        # Build a dynamic menu; only show 'Admin' if role == 'admin'
+        # Build dynamic menu; "Admin" will be shown only if the role is "admin".
         base_pages = ["Home", "Onboard", "Profile", "Contact", "Live Demo", "Logout"]
         if st.session_state["role"] == "admin":
-            base_pages.insert(3, "Admin")  # Insert Admin before Logout
+            base_pages.insert(3, "Admin")  # Insert Admin before Contact
 
         menu = st.sidebar.radio(
             "VATIFY Menu",
@@ -84,13 +82,10 @@ def main():
 
             st.markdown("## 👋 Welcome to VATIFY,")
             st.markdown(f"### {st.session_state.get('user_email', 'User')}")
-
             st.markdown("---")
 
             # Create columns for quick stats
             col1, col2, col3 = st.columns(3)
-
-            # 🧾 Onboarding Status
             with col1:
                 onboarding = supabase.table("user_onboarding").select("*").eq("user_id", st.session_state["user_id"]).execute()
                 onboarding_data = onboarding.data[0] if onboarding.data else None
@@ -98,8 +93,6 @@ def main():
                     st.metric(label="🧾 Onboarding Status", value="Complete")
                 else:
                     st.metric(label="🧾 Onboarding Status", value="Incomplete")
-
-            # 📂 Documents Uploaded
             with col2:
                 docs = supabase.table("document_uploads").select("*").eq("user_id", st.session_state["user_id"]).execute()
                 doc_data = docs.data[0] if docs.data else None
@@ -108,8 +101,6 @@ def main():
                     if doc_data and doc_data.get(key)
                 )
                 st.metric(label="📂 Documents Uploaded", value=f"{uploaded_docs}/4")
-
-            # 🛠️ Profile Completed
             with col3:
                 profile_complete = all([
                     onboarding_data.get("contact_name"),
@@ -126,7 +117,6 @@ def main():
                 st.info("You're almost there! Please upload the remaining documents.")
             else:
                 st.success("All done! We'll process your registration soon.")
-
             st.markdown("### 💡 Tips to get started:")
             st.markdown("""
             - Use the **📝 Onboard** tab to update your company and contact details.
@@ -134,7 +124,6 @@ def main():
             - Track your progress using this dashboard.
             - Need help? Reach out to our support team at [bokang@bonema.co.za](mailto:bokang@bonema.co.za)
             """)
-
             st.markdown("---")
             st.caption("© 2025 VATIFY. All rights reserved.")
 
@@ -149,15 +138,16 @@ def main():
         elif menu == "Contact":
             st.session_state["current_page"] = "Contact"
             contact.render_contact_page()
-
+        
         elif menu == "Admin":
             st.session_state["current_page"] = "Admin"
             admin.render_admin_dashboard(supabase)
-
+        
         elif menu == "Live Demo":
             st.session_state["current_page"] = "Live Demo"
-            live_demo.render_live_demo_page(supabase)
-
+            # Call live_demo without passing supabase, as it's not required.
+            live_demo.render_live_demo_page()
+        
         elif menu == "Logout":
             auth.logout_user()  # Clears session state and reruns
 
