@@ -11,7 +11,7 @@ import live_demo
 
 # Initialize connection to Supabase
 SUPABASE_URL = "https://wtpufclshxbpkdnuczzq.supabase.co"
-SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind0cHVmY2xzaHxicGtkbnVjenpxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQyNjU2NDAsImV4cCI6MjA1OTg0MTY0MH0.tW8TD_F4dmOGH4TEzFMZmeQmdtDlJ6dZQg8mjH1Ad1A"
+SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind0cHVmY2xzaHhicGtkbnVjenpxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQyNjU2NDAsImV4cCI6MjA1OTg0MTY0MH0.tW8TD_F4dmOGH4TEzFMZmeQmdtDlJ6dZQg8mjH1Ad1A"
 supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 
 def fetch_user_role(user_id: str) -> str:
