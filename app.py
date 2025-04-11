@@ -1,5 +1,3 @@
-# app.py
-
 import streamlit as st
 from supabase import create_client, Client
 
@@ -9,11 +7,11 @@ import onboard
 import user_profile
 import admin
 import contact
-
+import live_demo  # new import for Live Demo page
 
 # Initialize connection to Supabase
 SUPABASE_URL = "https://wtpufclshxbpkdnuczzq.supabase.co"
-SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind0cHVmY2xzaHhicGtkbnVjenpxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQyNjU2NDAsImV4cCI6MjA1OTg0MTY0MH0.tW8TD_F4dmOGH4TEzFMZmeQmdtDlJ6dZQg8mjH1Ad1A"
+SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind0cHVmY2xzaHxicGtkbnVjenpxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQyNjU2NDAsImV4cCI6MjA1OTg0MTY0MH0.tW8TD_F4dmOGH4TEzFMZmeQmdtDlJ6dZQg8mjH1Ad1A"
 supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 
 def fetch_user_role(user_id: str) -> str:
@@ -60,10 +58,10 @@ def main():
         # Logged in user: show side menu with icons
         st.sidebar.image("VATIFY.png", use_container_width=True)
 
-        # Build a dynamic menu; only show 'Admin' if role == 'admin'
-        base_pages = ["Home", "Onboard", "Profile", "Contact", "Logout"]
+        # Build a dynamic menu; for example, include Home, Onboard, Profile, Live Demo, Contact, Admin (if admin), Logout.
+        base_pages = ["Home", "Onboard", "Profile", "Live Demo", "Contact", "Logout"]
         if st.session_state["role"] == "admin":
-            base_pages.insert(3, "Admin")  # Insert Admin before Logout
+            base_pages.insert(4, "Admin")  # Insert Admin before Contact, or wherever you prefer.
 
         menu = st.sidebar.radio(
             "VATIFY Menu",
@@ -72,6 +70,7 @@ def main():
                 "Home": "🏠 Home",
                 "Onboard": "📝 Onboard",
                 "Profile": "👤 Profile",
+                "Live Demo": "🎬 Live Demo",
                 "Contact": "📞 Contact",
                 "Admin": "🔧 Admin",
                 "Logout": "🚪 Logout"
@@ -145,6 +144,10 @@ def main():
             st.session_state["current_page"] = "Profile"
             user_profile.render_user_profile(supabase)
         
+        elif menu == "Live Demo":
+            st.session_state["current_page"] = "Live Demo"
+            live_demo.render_live_demo_page()
+
         elif menu == "Contact":
             st.session_state["current_page"] = "Contact"
             contact.render_contact_page()
@@ -154,7 +157,7 @@ def main():
             admin.render_admin_dashboard(supabase)
 
         elif menu == "Logout":
-            auth.logout_user()  # Clears session state and reruns
+            auth.logout_user()
 
 if __name__ == "__main__":
     main()
