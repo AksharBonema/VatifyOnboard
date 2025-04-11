@@ -131,7 +131,7 @@ def main():
             - Use the **📝 Onboard** tab to update your company and contact details.
             - Upload key documents like your CIPC and Tax Clearance.
             - Track your progress using this dashboard.
-            - Need help? Reach out to our support team at [support@vatify.co.za](mailto:support@vatify.co.za)
+            - Need help? Reach out to our support team at [bokang@bonema.co.za](mailto:bokang@bonema.co.za)
             """)
 
             st.markdown("---")
