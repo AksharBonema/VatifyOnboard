@@ -61,7 +61,7 @@ def main():
         st.sidebar.image("VATIFY.png", use_container_width=True)
 
         # Build a dynamic menu; only show 'Admin' if role == 'admin'
-        base_pages = ["Home", "Onboard", "Profile", "Contact", "Logout"]
+        base_pages = ["Home", "Onboard", "Profile", "Contact", "Live Demo", "Logout"]
         if st.session_state["role"] == "admin":
             base_pages.insert(3, "Admin")  # Insert Admin before Logout
 
