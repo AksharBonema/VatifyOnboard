@@ -58,7 +58,7 @@ def main():
             st.session_state["role"] = user_role
 
         # Logged in user: show side menu with icons
-        st.sidebar.image("VATIFY.png", use_column_width=True)
+        st.sidebar.image("VATIFY.png", use_container_width=True)
 
         # Build a dynamic menu; only show 'Admin' if role == 'admin'
         base_pages = ["Home", "Onboard", "Profile", "Contact", "Logout"]
